@@ -21,7 +21,7 @@ Bootstrap v5.1.3 ...
 Algolia
 Google Analytics ...
 ##聯絡創作人員
-你可以透過以下方式與我聯絡
+If you find any question, please feel free to contact~
 steppenwolfwu@gmail.com
 
 ![image](https://github.com/wu8206/wu8206/assets/160311755/cb7d9856-7e34-41c6-a437-99240c297929)
