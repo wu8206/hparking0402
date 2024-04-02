@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台北旅館資料練習</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/myall.css">
+</head>
+<body>
+    <div class="header p-4">
+        <div class="fs-1 text-center fw-900 text-bg-success mt-4 py-4">台北OK認證旅館</div>
+    </div>
+    <div class="container-fluid">
+        <div class="row" style="height: 80vh;">
+            <div class="col-md-3 py-3">
+                <ul class="list-group" id="mylist">
+                    <li class="list-group-item">
+                        <div class="d-flex">
+                            <h5>台北市大同區</h5>
+                            <span class="badge text-bg-success ms-auto">99</span>
+                        </div>
+                    </li>     
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <div class="row" id="myhotel">
+                <div class="col-md-4 p-3 border border-3 border-danger shadow shadow-lg rounded rounded-5">
+                    <h4 class="fw-900">銀寶飯店</h4>
+                    <h5 class="fw-900">地址:台北市延平北路一段121號</h5>
+                    <h5 class="fw-900">電話: 2556-6659</h5>
+                    <button class="btn btn-primary">google map</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var regionTitle = [];
+        var counter = [];
+        var regionData = [];
+        $(function(){
+            $.ajax({
+                type: "GET",
+                url: "http://192.168.10.76/202312/20240222-hoteldata_api.php",
+                dataType: "json",
+                async: false,
+                success: showdata,
+                error: function(){
+                    alert("error-20240222-hoteldata_api.php");
+                }
+            });
+
+            $("#mylist #myregion").click(function(){
+                console.log($(this).data("key"));
+                drawRegionHotel($(this).data("key"));
+            })
+        });
+
+        function showdata(data){
+            console.log(data);
+            console.log(data.data[0].display_addr);
+            console.log(data.data[0].display_addr.indexOf("區", 0));
+            console.log(data.data[0].display_addr.substring(0, data.data[0].display_addr.indexOf("區", 0)+1));
+            data.data.forEach(function(item, key){
+                console.log(key+" : "+item.display_addr.substring(0, data.data[0].display_addr.indexOf("區", 0)+1));
+                // if(key<20){
+                    var getRegion = item.display_addr.substring(0, item.display_addr.indexOf("區", 0)+1);
+                    if(getRegion == ""){
+                        getRegion = "未分類";
+                    }
+                    if(counter[getRegion] == undefined){
+                        counter[getRegion] = regionData.length;
+                        regionData.push(new Array());
+                        regionTitle[counter[getRegion]] = getRegion;
+                    }
+                    regionData[counter[getRegion]].push(item);
+                // }
+            });
+            console.log(regionTitle);
+            console.log(counter);
+            console.log(regionData);
+
+            //渲染左側選單
+            $("#mylist").empty();
+            for(var i=0; i<regionTitle.length; i++){
+                var strHTML = '<li class="list-group-item" data-key="'+ i +'" id="myregion"><div class="d-flex"><h5>'+regionTitle[i]+'</h5><span class="badge text-bg-success ms-auto">'+regionData[i].length+'</span></div></li>';
+                $("#mylist").append(strHTML);
+            }
+        }
+
+        function drawRegionHotel(index){
+            $("#myhotel").empty();
+
+            // for(var i=0; i<regionData[index].length; i++){
+            //     var strHTML = '<div class="col-md-4 p-3 border border-3 border-danger shadow shadow-lg rounded rounded-5 mt-3"><h4 class="fw-900">'+regionData[index][i].name+'</h4><h5 class="fw-900">地址: '+regionData[index][i].display_addr+'</h5><h5 class="fw-900">電話: '+regionData[index][i].tel+'</h5><a href="https://www.google.com/maps/search/?api=1&query='+regionData[index][i].name+'" target="_blank" class="btn btn-primary">google map</a></div>';
+            //     $("#myhotel").append(strHTML);
+            // }
+
+            for(var i=0; i<regionData[index].length; i++){
+                var strHTML = '<div class="col-md-4 p-3 border border-3 border-danger shadow shadow-lg rounded rounded-5 mt-3"><h4 class="fw-900">'+regionData[index][i].name+'</h4><h5 class="fw-900">地址: '+regionData[index][i].display_addr+'</h5><h5 class="fw-900">電話: '+regionData[index][i].tel+'</h5><a href="https://www.google.com/maps/search/?api=1&map_action=map&zoom=16&query='+regionData[index][i].Y+','+regionData[index][i].X+'" target="_blank" class="btn btn-primary">google map</a></div>';
+                $("#myhotel").append(strHTML);
+            }
+
+            // for(var i=0; i<regionData[index].length; i++){
+            //     var strHTML = '<div class="col-md-4 p-3 border border-3 border-danger shadow shadow-lg rounded rounded-5 mt-3"><h4 class="fw-900">'+regionData[index][i].name+'</h4><h5 class="fw-900">地址: '+regionData[index][i].display_addr+'</h5><h5 class="fw-900">電話: '+regionData[index][i].tel+'</h5><a href="https://www.google.com/maps/search/?api=1&map_action=map&zoom=16&query=25.047817,121.516959" target="_blank" class="btn btn-primary">google map</a></div>';
+            //     $("#myhotel").append(strHTML);
+            // }
+
+        }
+    </script>
+
+</body>
+</html>

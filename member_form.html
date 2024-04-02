@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員資料表格</title>
+    <link rel="stylesheet" href="css/myall.css">
+    <style>
+        .section01{
+            background-color: var(--mycolor13);
+            height: 100vh;
+            position: relative;
+        }
+    
+        .section01 .logoimg{
+            position: absolute;
+            background-color: var(--mycolor05);
+            top: 30px;
+            bottom: 30px;
+            left: 30px;
+            right: 30px;
+            background-image: url(https://images.unsplash.com/photo-1512386233331-f023884a92e8?q=80&w=2095&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+            /* background-position: center center;
+            background-size: cover; */
+            background-attachment: fixed;
+        }
+        .section01 .user_text{
+            position: absolute;
+            top: 10%;
+            left: 64%;   
+            /* left50% 不是正中央，加上transform: translateX(-50%)才是 */
+            transform: translateX(-50%);      
+            text-align: center; 
+            background-color: var(--mycolor13);      
+            padding: 15px; 
+            border-radius: 10px;   
+            box-shadow: -5px 5px 2px 2px var(--mycolor04);
+        }
+        .section01 .user_text p{
+            font-size: 24px
+        }
+    
+        @media screen and (max-width:1024px){
+        .section01{
+            width: 100%;
+        }}
+
+        table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #dddddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    } 
+    </style>
+</head>
+<body>
+    <div class="section01 ">
+        <div class="logoimg bg-cover"></div>
+        <div class="user_text">
+            <table>
+                <tr>
+                  <th>帳號</th>
+                  <th>電話</th>
+                  <th>Email</th>
+                  <th>Gender</th>
+                  <th>Address</th>
+                  <th>會員狀態</th>
+                </tr>
+                <tr>
+                  <td>John Doe</td>
+                  <td>john@example.com</td>
+                  <td>30</td>
+                  <td>Male</td>
+                  <td>123 Main St, Anytown</td>
+                  <td>Active</td>
+                </tr>
+                <tr>
+                  <td>Jane Smith</td>
+                  <td>jane@example.com</td>
+                  <td>25</td>
+                  <td>Female</td>
+                  <td>456 Elm St, Otherville</td>
+                  <td>Active</td>
+                </tr>
+                <tr>
+                  <td>David Brown</td>
+                  <td>david@example.com</td>
+                  <td>40</td>
+                  <td>Male</td>
+                  <td>789 Oak St, Anycity</td>
+                  <td>Inactive</td>
+                </tr>
+                <!-- Add more rows as needed -->
+                <tr>
+                    <td>John Doe</td>
+                    <td>john@example.com</td>
+                    <td>30</td>
+                    <td>Male</td>
+                    <td>123 Main St, Anytown</td>
+                    <td>Active</td>
+                  </tr>
+                  <tr>
+                    <td>Jane Smith</td>
+                    <td>jane@example.com</td>
+                    <td>25</td>
+                    <td>Female</td>
+                    <td>456 Elm St, Otherville</td>
+                    <td>Active</td>
+                  </tr>
+                  <tr>
+                    <td>David Brown</td>
+                    <td>david@example.com</td>
+                    <td>40</td>
+                    <td>Male</td>
+                    <td>789 Oak St, Anycity</td>
+                    <td>Inactive</td>
+                  </tr>
+                  <tr>
+                    <td>John Doe</td>
+                    <td>john@example.com</td>
+                    <td>30</td>
+                    <td>Male</td>
+                    <td>123 Main St, Anytown</td>
+                    <td>Active</td>
+                  </tr>
+                  <tr>
+                    <td>Jane Smith</td>
+                    <td>jane@example.com</td>
+                    <td>25</td>
+                    <td>Female</td>
+                    <td>456 Elm St, Otherville</td>
+                    <td>Active</td>
+                  </tr>
+                  <tr>
+                    <td>David Brown</td>
+                    <td>david@example.com</td>
+                    <td>40</td>
+                    <td>Male</td>
+                    <td>789 Oak St, Anycity</td>
+                    <td>Inactive</td>
+                  </tr>
+              </table>        
+        </div>
+    </div>
+
+</body>
+</html>

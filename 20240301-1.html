@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>畫圖chart.js</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/myall.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 pt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <canvas id="myChartAddr"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-10 pt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <canvas id="myChartEdu"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+        //居住人口分布
+        const ctxAddr = document.getElementById('myChartAddr');
+        const chartAddr = new Chart(ctxAddr, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: '居住縣市人口分布圖',
+                    data: [],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        //學歷人口分布
+        const ctxEdu = document.getElementById('myChartEdu');
+        const chartEdu = new Chart(ctxEdu, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: '學歷人口分布圖',
+                    data: [],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        $(function () {
+            //load data
+            $.ajax({
+                type: "GET",
+                url: "20240301-chartjs-api.php",
+                dataType: "json",
+                async: false,
+                success: showdata,
+                error: function () {
+                    alert("error-20240301-chartjs-api.php");
+                }
+            });
+
+    // chart.data.labels.push("台北市");
+    // chart.data.datasets[0].data.push("40");
+
+    // chart.data.labels.push("台南市");
+    // chart.data.datasets[0].data.push("90");
+        });
+
+        function showdata(data) {
+            console.log(data);
+            //居住人口分布
+            data.dataAddr.forEach(function (item) {
+                chartAddr.data.labels.push(item.Addr);
+                chartAddr.data.datasets[0].data.push(item.countRegion);
+            });
+            chartAddr.update();
+
+            //學歷人口分布
+            data.dataEdu.forEach(function (item) {
+                chartEdu.data.labels.push(item.Edu);
+                chartEdu.data.datasets[0].data.push(item.countEdu);
+            });          
+            chartEdu.update();
+        }
+
+    </script>
+</body>
+</html>

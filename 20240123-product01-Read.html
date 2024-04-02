@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>產品列表</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/myall.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                控制台
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="ms-auto">
+                    <span class="text-warning h3" id="user_message"></span>
+                    <button class="btn btn-danger d-none" id="s02_logout_btn">登出</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container py-5">
+        <table class="table table-bordered table-hover table-sm border-success table-rwd">
+            <caption class="text-end">商品列表</caption>
+            <thead class="table-dark">
+                <tr>
+                    <th>商品編號</th>
+                    <th>產品名稱</th>
+                    <th>產品價格</th>
+                    <th>產品甜度</th>
+                    <th>產品數量</th>
+                    <th>外送(是/否)</th>
+                    <th>加料</th>
+                    <th>付款方式</th>
+                    <th>總價</th>
+                    <th>產品建檔時間</th>
+                    <th>更新/刪除</th>
+                </tr>
+            </thead>
+            <tbody id="mydata">
+                <tr>
+                    <td>商品編號</td>
+                    <td>產品名稱</td>
+                    <td>產品價格</td>
+                    <td>產品甜度</td>
+                    <td>產品數量</td>
+                    <td>外送(是/否)</td>
+                    <td>加料</td>
+                    <td>付款方式</td>
+                    <td>總價</td>
+                    <td>產品建檔時間</td>
+                    <td>
+                        <button class="btn btn-success me-1" data-bs-toggle="modal" data-bs-target="#updateModal">更新</button>
+                        <button class="btn btn-danger">刪除</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- update Modal -->
+    <!-- <div class="container flex-column align-items-center d-block mx-auto"> -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header text-bg-warning">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">產品更新</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="pname" class="form-label">商品名稱</label>
+                        <input type="text" class="form-control" id="pname" name="pname">
+                        <div class="valid-feedback">字數符合規定</div>
+                        <div class="invalid-feedback">字數不符合規定</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">商品價格</label>
+                        <input type="number" class="form-control" id="price" name="price" min="0" max="100">
+                        <div class="valid-feedback">價格符合規定(1-100)</div>
+                        <div class="invalid-feedback">價格不符合規定(1-100)</div>
+                    </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary" id="modal_update_btn">確認更新</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- </div> -->
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+
+    <script>
+        var u_id; //update id
+        $(function () {
+                      //判斷是否登入
+                      if (getCookie("UID01") != "") {
+                //UID01存在, 傳遞至後端api 判斷是否合法
+                var dataJSON = {};
+                dataJSON["UID01"] = getCookie("UID01");
+                console.log(JSON.stringify(dataJSON));
+                $.ajax({
+                    type: "POST",
+                    url: "member-Check_UID-api.php",
+                    data: JSON.stringify(dataJSON),
+                    dataType: "json",
+                    success: showdata_Check_UID,
+                    error: function () {
+                        alert("error-member-Check_UID-api.php");
+                    }
+                });
+            }else{
+                location.href = "SPA.html";
+            }
+
+            //登出按鈕監聽 #s02_logout_btn
+            $("#s02_logout_btn").click(function () {
+                setCookie("UID01", "", 7);
+                location.href = "SPA.html";
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "http://192.168.10.76/202312/20240123-product01-Read-api.php",
+                dataType: "json",
+                async: false,
+                success: showdata,
+                error: function(){
+                    alert("error-http://192.168.10.76/202312/20240123-product01-Read-api.php");
+                }
+            });
+
+            //監聽#update_btn
+            $("#mydata #update_btn").click(function(){
+                console.log("update_btn_ok");
+                console.log($(this).data("id"));
+                console.log($(this).data("pname"));
+                console.log($(this).data("price"));
+
+                u_id = $(this).data("id");
+                $("#pname").val($(this).data("pname"));
+                $("#price").val($(this).data("price"));
+            });
+
+            //監聽#delete_btn
+            $("#mydata #delete_btn").click(function(){
+                if(confirm("確認刪除此筆資料嗎?")){
+                    console.log($(this).data("id"));
+                
+                    //產生json格式的參數
+                    var dataJSON = {};
+                    dataJSON["ID"] = $(this).data("id");
+                    console.log(JSON.stringify(dataJSON));  
+
+                    //傳遞參數至後端api執行刪除功能
+                    $.ajax({
+                        type: "POST",
+                        url: "http://192.168.10.76/202312/20240123-product01-Delete-api.php",
+                        data: JSON.stringify(dataJSON),
+                        dataType: "json",
+                        success: showdata_delete,
+                        error: function(){
+                            alert("error-http://192.168.10.76/202312/20240123-product01-Delete-api.php");
+                        }
+                    });
+                }
+            });
+
+            //監聽 #modal_update_btn
+            $("#modal_update_btn").click(function(){
+                //產生json格式的參數
+                var dataJSON = {};
+                dataJSON["ID"] = u_id;
+                dataJSON["Pname"] = $("#pname").val();
+                dataJSON["Price"] = $("#price").val();
+                console.log(JSON.stringify(dataJSON));    
+                
+                //傳遞更新參數至後端api
+                $.ajax({
+                    type: "POST",
+                    url: "http://192.168.10.76/202312/20240123-product01-Update-api.php",
+                    data: JSON.stringify(dataJSON),
+                    dataType: "json",
+                    success: showdata_updata,
+                    error: function(){
+                        alert("error-http://192.168.10.76/202312/20240123-product01-Update-api.php");
+                    }
+                });
+            });
+        });
+        function showdata(data){
+            console.log(data);
+
+            $("#mydata").empty();
+            data.data.forEach(function(item){
+                console.log(item.Pname);
+                var strHTML = '<tr><td>' + item.ID + '</td><td>' + item.Pname + '</td><td>' + item.Price + '</td><td>' + item.Sugar + '</td><td>' + item.Num + '</td><td>' + item.Delivery + '</td><td>' + item.Added + '</td><td>' + item.Pay + '</td><td>' + item.Total + '</td><td>' + item.Created_at + '</td><td><button class="btn btn-success me-1" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="' + item.ID + '" data-pname="' + item.Pname + '" data-price="' + item.Price + '" id="update_btn">更新</button><button class="btn btn-danger" data-id="' + item.ID + '" id="delete_btn">刪除</button></td></tr>';
+                $("#mydata").append(strHTML);
+            });
+        }
+
+        function showdata_updata(data){
+            console.log(data);
+            if(data.state){
+                alert(data.message);
+                location.href = "20240123-product01-Read.html";
+            }else{
+                alert(data.message);
+            }
+        }
+
+        function showdata_delete(data){
+            console.log(data);
+            if(data.state){
+                alert(data.message);
+                location.href = "20240123-product01-Read.html";
+            }else{
+                alert(data.message);
+            }
+        }
+
+        function showdata_Check_UID(data) {
+            console.log(data);
+            if (data.state) {
+                //驗證成功
+                $("#user_message").text(data.data[0].Username + "登入中!");
+
+                //顯示登出按鈕
+                $("#s02_logout_btn").removeClass("d-none");
+            }else{
+                location.href = "SPA.html";
+            }
+        }
+
+        //w3s
+        function setCookie(cname, cvalue, exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+        //w3s
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+    </script>
+</body>
+</html>

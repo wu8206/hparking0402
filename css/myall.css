@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root{
+    --mycolor01: #b78338;
+    --mycolor02: #915c4c;
+    --mycolor03: #40686a; 
+    --mycolor04: #2f1812;  
+    --mycolor05: #d0dae4;
+    --mycolor06: #2a6078;
+    --mycolor07: #b9cd74; 
+    --mycolor08: #085438;  
+    --mycolor09: #eda286;
+    --mycolor10: #abbf4e;
+    --mycolor11: #7a96a2; 
+    --mycolor12: #252621;  
+    --mycolor13:rgba(0,0,0,0.2);
+    --mycolor14:#f5f5f1; 
+    --textcolor01:#5b3979;
+    --textcolor02:#a0919a;
+    --textcolor03:#333362;
+    --textcolor04:#617415;
+    --textcolor05:rgba(0,0,0,1);
+    --textcolor06:#fff;
+}
+
+body{
+    font-family: 'Noto Sans TC', sans-serif;
+}
+.fw-900{
+    font-weight: 900;
+}
+.fw-800{
+    font-weight: 800;
+}
+.fw-700{
+    font-weight: 700;
+}
+.fw-600{
+    font-weight: 600;
+}
+.fw-500{
+    font-weight: 500;
+}
+.fw-400{
+    font-weight: 400;
+}
+.fw-300{
+    font-weight: 300;
+}
+.fw-200{
+    font-weight: 200;
+}
+.fw-100{
+    font-weight: 100;
+}
+
+.mr-1{
+    margin-right: 1px;
+}
+.mr-2{
+    margin-right: 2px;
+}
+.mr-3{
+    margin-right: 3px;
+}
+.mr-4{
+    margin-right: 4px;
+}
+.mr-5{
+    margin-right: 5px;
+}
+.textcolor01{
+    color: var(--textcolor01);
+}
+.textcolor02{
+    color: var(--textcolor02);
+}
+.textcolor03{
+    color: var(--textcolor03);
+}
+.textcolor04{
+    color: var(--textcolor04);
+}
+.bg-cover{
+    background-position: center center;
+    background-size: cover;
+}
+.demo{
+    width: 70%;
+    padding: 25px;
+    margin: 25px;
+    border: 2px solid var(--mycolor01);
+}
